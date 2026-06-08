@@ -285,8 +285,32 @@ strong{font-weight:600;color:inherit}
 .loc__dist li{display:flex;align-items:baseline;gap:1.2rem;padding:.95rem 0;border-bottom:1px solid var(--line);font-size:var(--step-1);font-family:var(--serif)}
 .loc__km{font-family:var(--sans);font-size:var(--step--1);font-weight:700;color:var(--terra-deep);min-width:5.5rem;letter-spacing:.02em}
 .loc__note{font-size:.82rem;color:var(--stone-2);font-style:italic;margin-bottom:1.8rem}
-.loc__map{border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);box-shadow:0 40px 80px -50px oklch(0.2 0.03 150 / .5);aspect-ratio:4/3}
-.loc__map iframe{width:100%;height:100%;border:0;filter:saturate(.92) contrast(1.02)}
+.loc__actions{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:.4rem}
+.btn--ghost-dark{color:var(--ink);border-color:var(--line)}
+.btn--ghost-dark:hover{border-color:var(--ink);background:var(--bone-2);transform:translateY(-1px)}
+
+.loc__map{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);box-shadow:0 40px 80px -50px oklch(0.2 0.03 150 / .5);height:clamp(400px,42vw,560px);background:var(--ink)}
+#locMap{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+#locMap noscript img{width:100%;height:100%;object-fit:cover}
+.loc__map .leaflet-container{background:var(--ink);font-family:var(--sans)}
+.loc__map .leaflet-control-zoom a{color:var(--ink)}
+
+/* toggle satélite/mapa */
+.map__toggle{position:absolute;top:.8rem;left:.8rem;z-index:500;display:flex;background:oklch(0.255 0.02 152 / .82);backdrop-filter:blur(6px);border-radius:100px;padding:3px;box-shadow:0 4px 14px -6px rgba(0,0,0,.5)}
+.map__toggle button{border:none;background:none;color:oklch(0.9 0.01 88 / .7);font-family:var(--sans);font-size:.74rem;font-weight:600;letter-spacing:.02em;padding:.4em .9em;border-radius:100px;cursor:pointer;transition:background .25s,color .25s}
+.map__toggle button.is-on{background:var(--terra);color:#fff}
+
+/* popup de lote (marca) */
+.leaflet-popup-content-wrapper{border-radius:12px;padding:2px;box-shadow:0 14px 36px -14px rgba(0,0,0,.55)}
+.leaflet-popup-content{margin:.85rem 1rem;font-family:var(--sans)}
+.map-pop{display:flex;flex-direction:column;gap:.15rem;min-width:160px}
+.map-pop__ey{font-size:.62rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--terra-deep)}
+.map-pop__num{font-family:var(--serif);font-size:1.5rem;font-weight:600;color:var(--ink);line-height:1.1}
+.map-pop__area{font-size:.82rem;color:var(--stone);margin-bottom:.6rem}
+.map-pop__wa{display:inline-block;text-align:center;background:oklch(0.6 0.14 150);color:#fff!important;font-weight:600;font-size:.8rem;padding:.55em 1em;border-radius:100px;text-decoration:none}
+.map-pop__wa:hover{background:oklch(0.55 0.14 150)}
+.leaflet-tooltip.lot-tt{background:var(--ink);color:var(--bone);border:none;border-radius:7px;font-family:var(--sans);font-size:.78rem;font-weight:600;padding:.3rem .55rem;box-shadow:0 6px 16px -6px rgba(0,0,0,.5)}
+.leaflet-tooltip.lot-tt::before{border-top-color:var(--ink)}
 
 /* ════ CONTACTO ════ */
 .contact{background:var(--ink);color:var(--bone)}

@@ -35,6 +35,7 @@ const CONFIG = {
   });
 
   /* ── WhatsApp links ── */
+  window.YACANTO_WA = CONFIG.whatsapp; // lo usa el mapa satelital (map.js)
   const waBase = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(CONFIG.waMessage)}`;
   $$("[data-wa]").forEach(a => { a.href = waBase; a.target = "_blank"; a.rel = "noopener"; });
 
