@@ -166,6 +166,93 @@ strong{font-weight:600;color:inherit}
 .hero__scroll span{width:3px;height:8px;border-radius:3px;background:var(--cream);animation:scrolldot 1.8s var(--ease) infinite}
 @keyframes scrolldot{0%{opacity:0;transform:translateY(-4px)}40%{opacity:1}80%,100%{opacity:0;transform:translateY(10px)}}
 
+/* ════ HERO · CICLO DÍA→ATARDECER→NOCHE ════ */
+:root{ --sky-loop: 46s; }
+.sky{position:absolute;inset:0;pointer-events:none;will-change:opacity}
+.sky--day{
+  mix-blend-mode:soft-light;opacity:.5;
+  background:linear-gradient(180deg,#2f6aa6 0%, #7fb0d2 52%, #cfe2ec 100%);
+  animation:skyDay var(--sky-loop) ease-in-out infinite;
+}
+.sky--gold{
+  mix-blend-mode:overlay;opacity:0;
+  background:linear-gradient(180deg,#b98a2e 0%, #e6b25e 46%, #f3d59a 100%);
+  animation:skyGold var(--sky-loop) ease-in-out infinite;
+}
+.sky--sunset{
+  mix-blend-mode:overlay;opacity:0;
+  background:linear-gradient(180deg,#5e2d72 0%, #c0492f 42%, #ec7a36 74%, #f5b765 100%);
+  animation:skySunset var(--sky-loop) ease-in-out infinite;
+}
+.sky--night{
+  opacity:0;
+  background:linear-gradient(180deg,#070e24 0%, #0e1a33 50%, #182733 100%);
+  animation:skyNight var(--sky-loop) ease-in-out infinite;
+}
+.hero__sun{
+  position:absolute;left:42%;top:0;width:min(58vw,720px);aspect-ratio:1;border-radius:50%;
+  pointer-events:none;opacity:0;filter:blur(1px);
+  background:radial-gradient(circle,
+    rgba(255,244,222,.95) 0%, rgba(255,206,128,.7) 16%,
+    rgba(255,156,80,.32) 36%, rgba(255,120,60,.12) 52%, transparent 66%);
+  transform:translate(-50%,6vh) scale(.8);
+  animation:sunPath var(--sky-loop) ease-in-out infinite;
+  will-change:transform,opacity;
+}
+.hero__stars{
+  position:absolute;inset:0;opacity:0;pointer-events:none;
+  animation:starsFade var(--sky-loop) ease-in-out infinite;
+  background-repeat:no-repeat;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%, #fff, transparent),
+    radial-gradient(1px 1px at 22% 32%, #fff, transparent),
+    radial-gradient(1.6px 1.6px at 33% 12%, #fff, transparent),
+    radial-gradient(1px 1px at 41% 26%, #eaf0ff, transparent),
+    radial-gradient(1.3px 1.3px at 52% 16%, #fff, transparent),
+    radial-gradient(1px 1px at 61% 30%, #fff, transparent),
+    radial-gradient(1.7px 1.7px at 69% 10%, #fff, transparent),
+    radial-gradient(1px 1px at 76% 24%, #fff, transparent),
+    radial-gradient(1.4px 1.4px at 85% 14%, #fff, transparent),
+    radial-gradient(1px 1px at 92% 28%, #eaf0ff, transparent),
+    radial-gradient(1.2px 1.2px at 16% 44%, #fff, transparent),
+    radial-gradient(1px 1px at 28% 52%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 47% 40%, #fff, transparent),
+    radial-gradient(1px 1px at 58% 50%, #fff, transparent),
+    radial-gradient(1.3px 1.3px at 73% 46%, #fff, transparent),
+    radial-gradient(1px 1px at 88% 42%, #fff, transparent),
+    radial-gradient(2px 2px at 37% 22%, #fff, transparent),
+    radial-gradient(1px 1px at 7% 33%, #fff, transparent),
+    radial-gradient(1.1px 1.1px at 64% 38%, #eaf0ff, transparent),
+    radial-gradient(1px 1px at 80% 34%, #fff, transparent);
+}
+/* velo Vía Láctea */
+.hero__stars::after{
+  content:"";position:absolute;inset:0;opacity:.5;
+  background:linear-gradient(110deg, transparent 30%, rgba(200,210,255,.16) 48%, rgba(220,210,240,.10) 56%, transparent 72%);
+  filter:blur(6px);
+}
+
+@keyframes skyDay   {0%{opacity:.5}13%{opacity:.5}26%{opacity:.22}38%{opacity:0}88%{opacity:0}96%{opacity:.3}100%{opacity:.5}}
+@keyframes skyGold  {0%{opacity:0}17%{opacity:0}30%{opacity:.8}43%{opacity:.6}55%{opacity:.12}100%{opacity:0}}
+@keyframes skySunset{0%{opacity:0}37%{opacity:0}50%{opacity:.9}60%{opacity:.72}72%{opacity:.22}80%{opacity:0}100%{opacity:0}}
+@keyframes skyNight {0%{opacity:0}55%{opacity:0}73%{opacity:.82}88%{opacity:.82}96%{opacity:.18}100%{opacity:0}}
+@keyframes sunPath{
+  0%  {transform:translate(-50%,6vh)  scale(.78);opacity:.3}
+  26% {transform:translate(-50%,20vh) scale(.92);opacity:.6}
+  48% {transform:translate(-50%,40vh) scale(1.06);opacity:.95}
+  58% {transform:translate(-50%,52vh) scale(1.12);opacity:.7}
+  66% {transform:translate(-50%,61vh) scale(1.12);opacity:0}
+  90% {transform:translate(-50%,61vh) scale(1.12);opacity:0}
+  100%{transform:translate(-50%,6vh)  scale(.78);opacity:.3}
+}
+@keyframes starsFade{0%{opacity:0}58%{opacity:0}76%{opacity:.95}90%{opacity:.95}97%{opacity:0}100%{opacity:0}}
+
+@media (prefers-reduced-motion: reduce){
+  .sky,.hero__sun,.hero__stars{animation:none!important}
+  .sky--day{opacity:.18}.sky--gold{opacity:.5}.sky--sunset,.sky--night,.hero__stars{opacity:0}
+  .hero__sun{opacity:.7;transform:translate(-50%,32vh) scale(1.02)}
+}
+
 /* ════ STATS ════ */
 .stats{background:var(--ink);color:var(--bone)}
 .stats__inner{
