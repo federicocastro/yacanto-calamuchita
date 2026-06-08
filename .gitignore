@@ -1,3 +1,7 @@
 .DS_Store
 node_modules/
 *.log
+
+# Marca interna — no publicar en el repo público
+brand.json
+BRANDBOOK.md

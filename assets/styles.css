@@ -467,6 +467,23 @@ strong{font-weight:600;color:inherit}
 .footer__links a:hover{opacity:1;color:var(--terra)}
 .footer__fine{color:oklch(0.8 0.01 88 / .45);font-size:.74rem;max-width:60ch;line-height:1.5}
 
+/* ── badge de certeza (terracota = el color de la certeza) ── */
+.cert-badge{
+  display:inline-flex;align-items:center;gap:.55em;margin:1.5rem 0 0;
+  font-family:var(--sans);font-size:var(--step--1);font-weight:600;letter-spacing:.03em;
+  padding:.5em 1em .5em .55em;border-radius:100px;
+  border:1px solid oklch(0.7 0.12 55 / .75);color:var(--cream);
+  background:oklch(0.635 0.125 52 / .22);backdrop-filter:blur(6px);
+}
+.cert-badge__check{
+  display:inline-flex;width:1.3em;height:1.3em;flex:none;align-items:center;justify-content:center;
+  border-radius:50%;background:var(--terra);color:#fff;font-size:.74em;font-weight:800;
+}
+.hero__actions{margin-top:1.3rem}
+
+/* firma de marca (footer) */
+.footer__sign{font-family:var(--serif);font-style:italic;font-size:1.35rem;color:oklch(0.85 0.07 70);margin-top:-.4rem}
+
 /* ════ FLOATING WHATSAPP ════ */
 .wa-float{
   position:fixed;right:clamp(1rem,3vw,2rem);bottom:clamp(1rem,3vw,2rem);z-index:90;
