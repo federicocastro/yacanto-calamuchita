@@ -176,12 +176,13 @@ strong{font-weight:600;color:inherit}
 }
 .sky--gold{
   mix-blend-mode:overlay;opacity:0;
-  background:linear-gradient(180deg,#b98a2e 0%, #e6b25e 46%, #f3d59a 100%);
+  background:linear-gradient(180deg,#5d6398 0%, #c98a6e 48%, #f2cd83 100%);
   animation:skyGold var(--sky-loop) ease-in-out infinite;
 }
+/* atardecer afterglow real del loteo (azul→rosa/coral→naranja→amarillo dorado al horizonte) */
 .sky--sunset{
   mix-blend-mode:overlay;opacity:0;
-  background:linear-gradient(180deg,#5e2d72 0%, #c0492f 42%, #ec7a36 74%, #f5b765 100%);
+  background:linear-gradient(180deg,#234680 0%, #515892 14%, #95688c 29%, #db877c 45%, #ee9656 60%, #f5c049 74%, #f3d488 87%, #c9a86a 100%);
   animation:skySunset var(--sky-loop) ease-in-out infinite;
 }
 .sky--night{
