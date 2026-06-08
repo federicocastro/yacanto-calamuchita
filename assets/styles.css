@@ -190,15 +190,22 @@ strong{font-weight:600;color:inherit}
   background:linear-gradient(180deg,#070e24 0%, #0e1a33 50%, #182733 100%);
   animation:skyNight var(--sky-loop) ease-in-out infinite;
 }
+/* línea de horizonte: recorta el sol para que se esconda TRAS el cordón (no por delante) */
+.hero__horizon{
+  position:absolute;left:0;right:0;top:0;height:70%;overflow:hidden;pointer-events:none;
+  -webkit-mask-image:linear-gradient(180deg,#000 90%,transparent 100%);
+  mask-image:linear-gradient(180deg,#000 90%,transparent 100%);
+}
 .hero__sun{
-  position:absolute;left:44%;top:0;width:min(34vw,360px);aspect-ratio:1;border-radius:50%;
+  position:absolute;left:44%;top:calc(min(34vw,360px) * -0.5); /* anclado por el centro del disco */
+  width:min(34vw,360px);aspect-ratio:1;border-radius:50%;
   pointer-events:none;opacity:0;
   /* disco nítido (cielo despejado) + halo cálido suave */
   background:radial-gradient(circle,
     #fff8ea 0%, #fff1cf 7%, rgba(255,224,158,.98) 10.5%,   /* borde definido del disco */
     rgba(255,196,120,.55) 17%, rgba(255,168,96,.28) 30%,
     rgba(255,140,78,.12) 46%, transparent 62%);
-  transform:translate(-50%,6vh) scale(.85);
+  transform:translate(-50%,12vh) scale(.85);
   animation:sunPath var(--sky-loop) ease-in-out infinite;
   will-change:transform,opacity;
 }
@@ -240,14 +247,15 @@ strong{font-weight:600;color:inherit}
 @keyframes skySunset{0%{opacity:0}37%{opacity:0}50%{opacity:.9}60%{opacity:.72}72%{opacity:.22}80%{opacity:0}100%{opacity:0}}
 @keyframes skyNight {0%{opacity:0}55%{opacity:0}73%{opacity:.82}88%{opacity:.82}96%{opacity:.18}100%{opacity:0}}
 @keyframes sunPath{
-  0%  {transform:translate(-50%,6vh)  scale(.78);opacity:.3}   /* tarde: sol alto en el cielo oeste */
-  26% {transform:translate(-50%,20vh) scale(.92);opacity:.6}   /* desciende, dorado */
-  48% {transform:translate(-50%,40vh) scale(1.06);opacity:.95} /* cerca del horizonte, atardecer */
-  58% {transform:translate(-50%,52vh) scale(1.12);opacity:.7}  /* se pone */
-  66% {transform:translate(-50%,61vh) scale(1.12);opacity:0}   /* oculto tras el horizonte (Oeste) */
-  89% {transform:translate(-50%,61vh) scale(1.12);opacity:0}   /* noche: ausente */
-  90% {transform:translate(-50%,6vh)  scale(.78);opacity:0}    /* teleporta arriba ya invisible (el amanecer es atrás, Este) */
-  100%{transform:translate(-50%,6vh)  scale(.78);opacity:.3}   /* reaparece como sol de tarde, NO sale de frente */
+  0%  {transform:translate(-50%,12vh) scale(.85);opacity:.3}   /* tarde: sol alto en el cielo oeste */
+  28% {transform:translate(-50%,33vh) scale(.95);opacity:.62}  /* desciende */
+  50% {transform:translate(-50%,56vh) scale(1);opacity:.92}    /* dorado, acercándose al cordón */
+  60% {transform:translate(-50%,67vh) scale(1.02);opacity:.9}  /* toca la sierra: empieza a esconderse detrás */
+  66% {transform:translate(-50%,76vh) scale(1.02);opacity:.72} /* medio escondido tras el cordón */
+  71% {transform:translate(-50%,85vh) scale(1.02);opacity:0}   /* oculto tras las sierras (Oeste) */
+  89% {transform:translate(-50%,85vh) scale(1.02);opacity:0}   /* noche: ausente */
+  90% {transform:translate(-50%,12vh) scale(.85);opacity:0}    /* teleporta arriba ya invisible (amanecer es atrás, Este) */
+  100%{transform:translate(-50%,12vh) scale(.85);opacity:.3}   /* reaparece como sol de tarde, NO sale de frente */
 }
 @keyframes starsFade{0%{opacity:0}58%{opacity:0}76%{opacity:.95}90%{opacity:.95}97%{opacity:0}100%{opacity:0}}
 
