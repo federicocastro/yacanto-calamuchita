@@ -314,6 +314,7 @@ strong{font-weight:600;color:inherit}
   background:oklch(0.16 0.02 150 / .92);backdrop-filter:blur(8px);
   opacity:0;transition:opacity .28s var(--ease);padding:clamp(1rem,4vw,3rem);
 }
+.lightbox[hidden]{display:none}
 .lightbox.is-open{opacity:1}
 .lb__stage{margin:0;max-width:min(1100px,92vw);max-height:88vh;display:flex;flex-direction:column;align-items:center;gap:.9rem}
 .lb__img{
@@ -368,6 +369,7 @@ strong{font-weight:600;color:inherit}
 .loc__map .leaflet-control-zoom a{color:var(--ink)}
 
 /* toggle satélite/mapa */
+.map__toggle[hidden]{display:none}
 .map__toggle{position:absolute;top:.8rem;left:.8rem;z-index:500;display:flex;background:oklch(0.255 0.02 152 / .82);backdrop-filter:blur(6px);border-radius:100px;padding:3px;box-shadow:0 4px 14px -6px rgba(0,0,0,.5)}
 .map__toggle button{border:none;background:none;color:oklch(0.9 0.01 88 / .7);font-family:var(--sans);font-size:.74rem;font-weight:600;letter-spacing:.02em;padding:.4em .9em;border-radius:100px;cursor:pointer;transition:background .25s,color .25s}
 .map__toggle button.is-on{background:var(--terra);color:#fff}
