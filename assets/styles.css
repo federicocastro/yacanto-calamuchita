@@ -237,13 +237,14 @@ strong{font-weight:600;color:inherit}
 @keyframes skySunset{0%{opacity:0}37%{opacity:0}50%{opacity:.9}60%{opacity:.72}72%{opacity:.22}80%{opacity:0}100%{opacity:0}}
 @keyframes skyNight {0%{opacity:0}55%{opacity:0}73%{opacity:.82}88%{opacity:.82}96%{opacity:.18}100%{opacity:0}}
 @keyframes sunPath{
-  0%  {transform:translate(-50%,6vh)  scale(.78);opacity:.3}
-  26% {transform:translate(-50%,20vh) scale(.92);opacity:.6}
-  48% {transform:translate(-50%,40vh) scale(1.06);opacity:.95}
-  58% {transform:translate(-50%,52vh) scale(1.12);opacity:.7}
-  66% {transform:translate(-50%,61vh) scale(1.12);opacity:0}
-  90% {transform:translate(-50%,61vh) scale(1.12);opacity:0}
-  100%{transform:translate(-50%,6vh)  scale(.78);opacity:.3}
+  0%  {transform:translate(-50%,6vh)  scale(.78);opacity:.3}   /* tarde: sol alto en el cielo oeste */
+  26% {transform:translate(-50%,20vh) scale(.92);opacity:.6}   /* desciende, dorado */
+  48% {transform:translate(-50%,40vh) scale(1.06);opacity:.95} /* cerca del horizonte, atardecer */
+  58% {transform:translate(-50%,52vh) scale(1.12);opacity:.7}  /* se pone */
+  66% {transform:translate(-50%,61vh) scale(1.12);opacity:0}   /* oculto tras el horizonte (Oeste) */
+  89% {transform:translate(-50%,61vh) scale(1.12);opacity:0}   /* noche: ausente */
+  90% {transform:translate(-50%,6vh)  scale(.78);opacity:0}    /* teleporta arriba ya invisible (el amanecer es atrás, Este) */
+  100%{transform:translate(-50%,6vh)  scale(.78);opacity:.3}   /* reaparece como sol de tarde, NO sale de frente */
 }
 @keyframes starsFade{0%{opacity:0}58%{opacity:0}76%{opacity:.95}90%{opacity:.95}97%{opacity:0}100%{opacity:0}}
 
