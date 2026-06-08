@@ -191,12 +191,14 @@ strong{font-weight:600;color:inherit}
   animation:skyNight var(--sky-loop) ease-in-out infinite;
 }
 .hero__sun{
-  position:absolute;left:42%;top:0;width:min(58vw,720px);aspect-ratio:1;border-radius:50%;
-  pointer-events:none;opacity:0;filter:blur(1px);
+  position:absolute;left:44%;top:0;width:min(34vw,360px);aspect-ratio:1;border-radius:50%;
+  pointer-events:none;opacity:0;
+  /* disco nítido (cielo despejado) + halo cálido suave */
   background:radial-gradient(circle,
-    rgba(255,244,222,.95) 0%, rgba(255,206,128,.7) 16%,
-    rgba(255,156,80,.32) 36%, rgba(255,120,60,.12) 52%, transparent 66%);
-  transform:translate(-50%,6vh) scale(.8);
+    #fff8ea 0%, #fff1cf 7%, rgba(255,224,158,.98) 10.5%,   /* borde definido del disco */
+    rgba(255,196,120,.55) 17%, rgba(255,168,96,.28) 30%,
+    rgba(255,140,78,.12) 46%, transparent 62%);
+  transform:translate(-50%,6vh) scale(.85);
   animation:sunPath var(--sky-loop) ease-in-out infinite;
   will-change:transform,opacity;
 }
