@@ -375,6 +375,26 @@ strong{font-weight:600;color:inherit}
   .lb__nav{width:44px;height:44px;font-size:1.4rem}
 }
 
+/* ════ EL PUEBLO ════ */
+.town{background:var(--bone-2)}
+.town .section-head{color:var(--ink)}
+.town .section-head__lead{color:var(--stone)}
+.town__grid{
+  max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter) clamp(4.5rem,10vw,8rem);
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;
+}
+.amenity{
+  background:var(--cream);border:1px solid var(--line);border-radius:var(--radius);
+  padding:clamp(1.5rem,2.6vw,2.1rem);display:flex;flex-direction:column;gap:.55rem;
+  transition:transform .4s var(--ease),box-shadow .4s var(--ease),border-color .4s;
+}
+.amenity:hover{transform:translateY(-4px);box-shadow:0 24px 50px -34px oklch(0.2 0.03 150 / .45);border-color:oklch(0.8 0.03 60)}
+.amenity__idx{font-family:var(--serif);font-size:1.4rem;font-style:italic;color:var(--terra);font-weight:500;line-height:1}
+.amenity h3{color:var(--ink);font-size:var(--step-1);font-weight:600}
+.amenity p{color:var(--stone);font-size:var(--step--1);line-height:1.6}
+@media (max-width:1000px){ .town__grid{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:560px){ .town__grid{grid-template-columns:1fr} }
+
 /* ════ UBICACIÓN ════ */
 .loc{max-width:var(--maxw);margin:0 auto;padding:clamp(4.5rem,10vw,8rem) var(--gutter);display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(2.5rem,6vw,5rem);align-items:center}
 .loc__text h2{margin:.4rem 0 1.4rem}
