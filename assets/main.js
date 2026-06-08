@@ -6,17 +6,17 @@
 const CONFIG = {
   // WhatsApp: código país + área + número, SIN signos, espacios ni 0/15.
   // Ej Córdoba cel: 54 9 351 123 4567  ->  "5493511234567"
-  whatsapp: "5493540000000",
+  whatsapp: "5493517045640",
 
   // Mensaje precargado del botón de WhatsApp
   waMessage: "¡Hola! Me interesan los lotes en Yacanto de Calamuchita. ¿Me pasás info?",
 
   // Email donde te llegan los formularios (FormSubmit, 100% gratis).
   // La PRIMERA vez que alguien envíe, FormSubmit te manda un mail para activar.
-  formEmail: "CAMBIAR@EMAIL.com",
+  formEmail: "fmc0208@gmail.com",
 
   // Precio "desde" que se muestra en el hero. Ej: "USD 18.000"
-  priceFrom: "USD —",
+  priceFrom: "USD 20.000 la hectárea",
 };
 
 /* ──────────────────────────────────────────────────────────── */
