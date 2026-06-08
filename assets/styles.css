@@ -277,6 +277,78 @@ strong{font-weight:600;color:inherit}
 .plano__clear:hover{color:var(--terra)}
 .plano__legal{max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter) clamp(4rem,8vw,6rem);font-size:.78rem;color:var(--stone-2);text-align:center;font-style:italic}
 
+/* ════ GALERÍA ════ */
+.gallery{background:var(--bone);padding-bottom:clamp(4.5rem,9vw,7rem)}
+.gallery .section-head{color:var(--ink)}
+.gallery .section-head__lead{color:var(--stone)}
+.gallery__grid{
+  max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);
+  column-count:3;column-gap:1rem;
+}
+.gphoto{
+  break-inside:avoid;margin:0 0 1rem;position:relative;border-radius:var(--radius);overflow:hidden;
+  cursor:pointer;background:var(--bone-2);box-shadow:0 18px 40px -30px oklch(0.2 0.03 150 / .5);
+  outline:none;
+}
+.gphoto img{
+  width:100%;height:auto;display:block;transition:transform .7s var(--ease),filter .5s;
+  filter:saturate(1.02);
+}
+.gphoto::after{
+  content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,oklch(0.18 0.025 150 / .72));
+  opacity:0;transition:opacity .4s var(--ease);
+}
+.gphoto::before{
+  content:attr(data-cap);position:absolute;left:1rem;right:1rem;bottom:.9rem;z-index:2;
+  color:var(--cream);font-family:var(--serif);font-size:1.12rem;font-style:italic;line-height:1.25;
+  opacity:0;transform:translateY(10px);transition:opacity .45s var(--ease),transform .45s var(--ease);
+  text-shadow:0 2px 16px oklch(0.15 0.03 150 / .6);
+}
+.gphoto:hover img,.gphoto:focus-visible img{transform:scale(1.05)}
+.gphoto:hover::after,.gphoto:hover::before,.gphoto:focus-visible::after,.gphoto:focus-visible::before{opacity:1;transform:none}
+.gphoto:focus-visible{box-shadow:0 0 0 3px var(--terra),0 18px 40px -30px oklch(0.2 0.03 150 / .5)}
+
+/* lightbox */
+.lightbox{
+  position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;
+  background:oklch(0.16 0.02 150 / .92);backdrop-filter:blur(8px);
+  opacity:0;transition:opacity .28s var(--ease);padding:clamp(1rem,4vw,3rem);
+}
+.lightbox.is-open{opacity:1}
+.lb__stage{margin:0;max-width:min(1100px,92vw);max-height:88vh;display:flex;flex-direction:column;align-items:center;gap:.9rem}
+.lb__img{
+  max-width:100%;max-height:78vh;width:auto;height:auto;border-radius:10px;
+  box-shadow:0 40px 100px -30px rgba(0,0,0,.7);transition:opacity .3s var(--ease);
+}
+.lb__cap{display:flex;flex-direction:column;align-items:center;gap:.3rem;text-align:center;color:var(--bone)}
+.lb__cap #lbCap{font-family:var(--serif);font-style:italic;font-size:1.25rem}
+.lb__count{font-family:var(--sans);font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:oklch(0.8 0.06 70)}
+.lb__close{
+  position:absolute;top:clamp(1rem,3vw,1.8rem);right:clamp(1rem,3vw,1.8rem);z-index:2;
+  width:46px;height:46px;border-radius:50%;border:1px solid oklch(1 0 0 / .25);
+  background:oklch(1 0 0 / .08);color:var(--bone);font-size:1.1rem;cursor:pointer;
+  transition:background .25s,transform .25s;
+}
+.lb__close:hover{background:var(--terra);transform:rotate(90deg)}
+.lb__nav{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+  width:56px;height:56px;border-radius:50%;border:1px solid oklch(1 0 0 / .25);
+  background:oklch(1 0 0 / .08);color:var(--bone);font-size:1.8rem;line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:background .25s,transform .25s;
+}
+.lb__nav:hover{background:var(--terra)}
+.lb__prev{left:clamp(.5rem,2vw,1.8rem)}
+.lb__prev:hover{transform:translateY(-50%) translateX(-3px)}
+.lb__next{right:clamp(.5rem,2vw,1.8rem)}
+.lb__next:hover{transform:translateY(-50%) translateX(3px)}
+@media (max-width:1000px){ .gallery__grid{column-count:2} }
+@media (max-width:560px){
+  .gallery__grid{column-count:1}
+  .gphoto::before{opacity:1;transform:none}
+  .gphoto::after{opacity:1}
+  .lb__nav{width:44px;height:44px;font-size:1.4rem}
+}
+
 /* ════ UBICACIÓN ════ */
 .loc{max-width:var(--maxw);margin:0 auto;padding:clamp(4.5rem,10vw,8rem) var(--gutter);display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(2.5rem,6vw,5rem);align-items:center}
 .loc__text h2{margin:.4rem 0 1.4rem}
