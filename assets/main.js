@@ -17,6 +17,10 @@ const CONFIG = {
 
   // Precio "desde" que se muestra en el hero. Ej: "USD 18.000"
   priceFrom: "USD 20.000 la hectárea",
+
+  // Lotes YA VENDIDOS (por número). Editá esta lista cuando se vendan más:
+  // se pintan en gris en los dos mapas y actualizan la barra de avance.
+  soldLots: [31, 35, 36, 37, 38, 49, 50, 51, 52, 53],
 };
 
 /* ──────────────────────────────────────────────────────────── */
@@ -33,6 +37,10 @@ const CONFIG = {
   $$("[data-price]").forEach(el => {
     el.innerHTML = `Desde <strong>${CONFIG.priceFrom}</strong> · financiación a convenir`;
   });
+
+  /* ── Sold lots (compartido con el mapa satelital) ── */
+  const SOLD = new Set(CONFIG.soldLots || []);
+  window.SOLD_LOTS = CONFIG.soldLots || [];
 
   /* ── WhatsApp links ── */
   window.YACANTO_WA = CONFIG.whatsapp; // lo usa el mapa satelital (map.js)
@@ -110,9 +118,21 @@ const CONFIG = {
     const fmt = (n) => n.toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const elFromPts = (pts) => pts.map(p => p.join(",")).join(" ");
 
-    // range labels
+    // marcar vendidos y recalcular disponibilidad / avance
+    data.lots.forEach(l => { l.sold = SOLD.has(l.num); });
+    const total = data.lots.length;
+    const avail = data.lots.filter(l => !l.sold);
+    const soldCount = total - avail.length;
+    const aAreas = (avail.length ? avail : data.lots).map(l => l.area);
+    const aMin = Math.min.apply(null, aAreas), aMax = Math.max.apply(null, aAreas);
+    const aAvg = aAreas.reduce((s, n) => s + n, 0) / aAreas.length;
+    const soldPct = Math.round((soldCount / total) * 100);
+
     const setTxt = (id, v) => { const e = $("#" + id); if (e) e.textContent = v; };
-    setTxt("rangeMin", fmt(data.minHa)); setTxt("rangeMax", fmt(data.maxHa)); setTxt("rangeAvg", fmt(data.avgHa));
+    setTxt("rangeMin", fmt(aMin)); setTxt("rangeMax", fmt(aMax)); setTxt("rangeAvg", fmt(aAvg));
+    setTxt("availCount", avail.length); setTxt("soldCount", soldCount);
+    setTxt("totalCount", total); setTxt("soldPct", soldPct + "%");
+    const progBar = $("#progBar"); if (progBar) progBar.style.width = soldPct + "%";
 
     // perimeter
     const gPerim = $("#planoPerim");
@@ -140,19 +160,27 @@ const CONFIG = {
     let activeEl = null;
 
     const selNum = $("#selNum"), selArea = $("#selArea"), fLote = $("#f-lote");
-    const waLotBtn = $("[data-wa-lot]");
+    const selStatus = $("#selStatus"), waLotBtn = $("[data-wa-lot]");
 
     const selectLot = (lot, el) => {
       if (activeEl) activeEl.classList.remove("is-active");
       activeEl = el; el.classList.add("is-active");
       panelDefault.hidden = true; panelActive.hidden = false;
+      panelActive.classList.toggle("is-sold", !!lot.sold);
       selNum.textContent = lot.num;
       selArea.textContent = fmt(lot.area) + " ha";
-      if (fLote) fLote.value = `Lote ${lot.num} (${fmt(lot.area)} ha)`;
+      if (selStatus) {
+        selStatus.textContent = lot.sold ? "Vendido" : "Disponible";
+        selStatus.className = "meta__v " + (lot.sold ? "meta__v--sold" : "meta__v--ok");
+      }
+      if (fLote) fLote.value = lot.sold ? "—" : `Lote ${lot.num} (${fmt(lot.area)} ha)`;
       if (waLotBtn) {
-        const msg = `¡Hola! Me interesa el Lote ${lot.num} (${fmt(lot.area)} ha) en Yacanto de Calamuchita. ¿Me pasás info y precio?`;
+        const msg = lot.sold
+          ? `¡Hola! Vi que el Lote ${lot.num} está vendido. ¿Qué lotes disponibles tenés en Yacanto de Calamuchita?`
+          : `¡Hola! Me interesa el Lote ${lot.num} (${fmt(lot.area)} ha) en Yacanto de Calamuchita. ¿Me pasás info y precio?`;
         waLotBtn.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
         waLotBtn.target = "_blank"; waLotBtn.rel = "noopener";
+        waLotBtn.textContent = lot.sold ? "Ver lotes disponibles" : "Consultar por este lote";
       }
     };
     const clearLot = () => {
@@ -168,17 +196,19 @@ const CONFIG = {
       const rect = svg.getBoundingClientRect();
       tip.style.left = (evt.clientX - rect.left) + "px";
       tip.style.top = (evt.clientY - rect.top) + "px";
-      tip.innerHTML = `Lote ${lot.num} · <strong>${fmt(lot.area)} ha</strong>`;
+      tip.innerHTML = lot.sold
+        ? `Lote ${lot.num} · <strong class="tip-sold">Vendido</strong>`
+        : `Lote ${lot.num} · <strong>${fmt(lot.area)} ha</strong>`;
       tip.hidden = false;
     };
 
     data.lots.forEach(lot => {
       const poly = document.createElementNS(SVGNS, "polygon");
       poly.setAttribute("points", elFromPts(lot.pts));
-      poly.setAttribute("class", "lot");
+      poly.setAttribute("class", "lot" + (lot.sold ? " is-sold" : ""));
       poly.setAttribute("tabindex", "0");
       poly.setAttribute("role", "button");
-      poly.setAttribute("aria-label", `Lote ${lot.num}, ${fmt(lot.area)} hectáreas`);
+      poly.setAttribute("aria-label", `Lote ${lot.num}, ${fmt(lot.area)} hectáreas` + (lot.sold ? ", vendido" : ", disponible"));
       poly.addEventListener("mousemove", (e) => moveTip(e, lot));
       poly.addEventListener("mouseleave", () => { tip.hidden = true; });
       poly.addEventListener("click", () => selectLot(lot, poly));
@@ -188,7 +218,7 @@ const CONFIG = {
 
       const t = document.createElementNS(SVGNS, "text");
       t.setAttribute("x", lot.c[0]); t.setAttribute("y", lot.c[1]);
-      t.setAttribute("class", "lot-label");
+      t.setAttribute("class", "lot-label" + (lot.sold ? " is-sold" : ""));
       t.textContent = lot.num;
       gLabels.appendChild(t);
     });

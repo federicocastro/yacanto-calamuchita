@@ -36,30 +36,57 @@
 
     var fmt = function (n) { return n.toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
 
+    // Lotes vendidos (compartido con main.js)
+    var SOLD = new Set(window.SOLD_LOTS || []);
+
     // Estilos de marca
     var lotStyle = { color: "#c97a4a", weight: 1.5, opacity: 0.95, fillColor: "#e0a06a", fillOpacity: 0.18 };
+    var soldStyle = { color: "#9aa0a0", weight: 1.2, opacity: 0.85, fillColor: "#3a3f3c", fillOpacity: 0.55 };
     var lotHover = { weight: 2.5, fillOpacity: 0.42 };
     var caminoStyle = { color: "#f0e8d8", weight: 3, opacity: 0.7, dashArray: "1 6", lineCap: "round" };
     var perimStyle = { color: "#ffffff", weight: 2, opacity: 0.8, dashArray: "6 6", fill: false };
 
     var lotLayer = L.geoJSON(geo, {
       filter: function (f) { return f.properties.kind === "lote"; },
-      style: lotStyle,
+      style: function (f) { return SOLD.has(f.properties.num) ? soldStyle : lotStyle; },
       onEachFeature: function (f, layer) {
         var p = f.properties;
-        var msg = "¡Hola! Me interesa el Lote " + p.num + " (" + fmt(p.area) + " ha) en Yacanto de Calamuchita. ¿Me pasás info y precio?";
-        var wa = "https://wa.me/" + WA + "?text=" + encodeURIComponent(msg);
-        layer.bindTooltip("Lote " + p.num + " · " + fmt(p.area) + " ha", { sticky: true, direction: "top", className: "lot-tt" });
-        layer.bindPopup(
-          '<div class="map-pop"><span class="map-pop__ey">Lote disponible</span>' +
-          '<strong class="map-pop__num">Lote ' + p.num + '</strong>' +
-          '<span class="map-pop__area">' + fmt(p.area) + ' ha · escritura inmediata</span>' +
-          '<a class="map-pop__wa" target="_blank" rel="noopener" href="' + wa + '">Consultar por WhatsApp</a></div>'
-        );
-        layer.on("mouseover", function () { layer.setStyle(lotHover); });
-        layer.on("mouseout", function () { lotLayer.resetStyle(layer); });
+        var sold = SOLD.has(p.num);
+        layer.bindTooltip("Lote " + p.num + (sold ? " · VENDIDO" : " · " + fmt(p.area) + " ha"),
+          { sticky: true, direction: "top", className: "lot-tt" + (sold ? " lot-tt--sold" : "") });
+        if (sold) {
+          var msgS = "¡Hola! Vi que el Lote " + p.num + " está vendido. ¿Qué lotes disponibles tenés en Yacanto de Calamuchita?";
+          var waS = "https://wa.me/" + WA + "?text=" + encodeURIComponent(msgS);
+          layer.bindPopup(
+            '<div class="map-pop map-pop--sold"><span class="map-pop__ey">Vendido</span>' +
+            '<strong class="map-pop__num">Lote ' + p.num + '</strong>' +
+            '<span class="map-pop__area">Este lote ya fue escriturado.</span>' +
+            '<a class="map-pop__wa" target="_blank" rel="noopener" href="' + waS + '">Ver disponibles</a></div>'
+          );
+        } else {
+          var msg = "¡Hola! Me interesa el Lote " + p.num + " (" + fmt(p.area) + " ha) en Yacanto de Calamuchita. ¿Me pasás info y precio?";
+          var wa = "https://wa.me/" + WA + "?text=" + encodeURIComponent(msg);
+          layer.bindPopup(
+            '<div class="map-pop"><span class="map-pop__ey">Lote disponible</span>' +
+            '<strong class="map-pop__num">Lote ' + p.num + '</strong>' +
+            '<span class="map-pop__area">' + fmt(p.area) + ' ha · escritura inmediata</span>' +
+            '<a class="map-pop__wa" target="_blank" rel="noopener" href="' + wa + '">Consultar por WhatsApp</a></div>'
+          );
+          layer.on("mouseover", function () { layer.setStyle(lotHover); });
+          layer.on("mouseout", function () { lotLayer.resetStyle(layer); });
+        }
       }
     }).addTo(map);
+
+    // Leyenda
+    var legend = L.control({ position: "bottomleft" });
+    legend.onAdd = function () {
+      var d = L.DomUtil.create("div", "map-legend");
+      d.innerHTML = '<span class="map-legend__i"><i class="sw sw--ok"></i>Disponible</span>' +
+                    '<span class="map-legend__i"><i class="sw sw--sold"></i>Vendido</span>';
+      return d;
+    };
+    legend.addTo(map);
 
     L.geoJSON(geo, { filter: function (f) { return f.properties.kind === "perim"; }, style: perimStyle }).addTo(map);
     L.geoJSON(geo, { filter: function (f) { return f.properties.kind === "camino"; }, style: caminoStyle }).addTo(map);
