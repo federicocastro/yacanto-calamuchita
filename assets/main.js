@@ -162,6 +162,15 @@ const CONFIG = {
     const selNum = $("#selNum"), selArea = $("#selArea"), fLote = $("#f-lote");
     const selStatus = $("#selStatus"), waLotBtn = $("[data-wa-lot]");
 
+    // Botón flotante de WhatsApp: se vuelve "lote-consciente" al elegir un lote
+    const waFloat = $(".wa-float");
+    const waFloatTxt = waFloat ? waFloat.querySelector(".wa-float__txt") : null;
+    const setWaFloat = (href, label) => {
+      if (!waFloat) return;
+      waFloat.href = href; waFloat.target = "_blank"; waFloat.rel = "noopener";
+      if (waFloatTxt) waFloatTxt.textContent = label;
+    };
+
     const selectLot = (lot, el) => {
       if (activeEl) activeEl.classList.remove("is-active");
       activeEl = el; el.classList.add("is-active");
@@ -174,20 +183,23 @@ const CONFIG = {
         selStatus.className = "meta__v " + (lot.sold ? "meta__v--sold" : "meta__v--ok");
       }
       if (fLote) fLote.value = lot.sold ? "—" : `Lote ${lot.num} (${fmt(lot.area)} ha)`;
+      const msg = lot.sold
+        ? `¡Hola! Vi que el Lote ${lot.num} está vendido. ¿Qué lotes disponibles tenés en Yacanto de Calamuchita?`
+        : `¡Hola! Me interesa el Lote ${lot.num} (${fmt(lot.area)} ha) en Yacanto de Calamuchita. ¿Me pasás info y precio?`;
+      const href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
       if (waLotBtn) {
-        const msg = lot.sold
-          ? `¡Hola! Vi que el Lote ${lot.num} está vendido. ¿Qué lotes disponibles tenés en Yacanto de Calamuchita?`
-          : `¡Hola! Me interesa el Lote ${lot.num} (${fmt(lot.area)} ha) en Yacanto de Calamuchita. ¿Me pasás info y precio?`;
-        waLotBtn.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
-        waLotBtn.target = "_blank"; waLotBtn.rel = "noopener";
+        waLotBtn.href = href; waLotBtn.target = "_blank"; waLotBtn.rel = "noopener";
         waLotBtn.textContent = lot.sold ? "Ver lotes disponibles" : "Consultar por este lote";
       }
+      // el flotante consulta por ESTE lote (disponible); si está vendido, vuelve a genérico
+      setWaFloat(lot.sold ? waBase : href, lot.sold ? "WhatsApp" : `Consultar Lote ${lot.num}`);
     };
     const clearLot = () => {
       if (activeEl) activeEl.classList.remove("is-active");
       activeEl = null;
       panelActive.hidden = true; panelDefault.hidden = false;
       if (fLote) fLote.value = "—";
+      setWaFloat(waBase, "WhatsApp"); // vuelve al mensaje genérico
     };
     const clearBtn = $("#planoClear");
     if (clearBtn) clearBtn.addEventListener("click", clearLot);
